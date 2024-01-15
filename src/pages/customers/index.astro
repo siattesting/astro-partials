@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import CustomerCard from '../../components/CustomerCard.astro'
+import { fetchCustomers } from '../../lib/neondatafetcher.js'
+const pageTitle = "Customers Index Page";
+
+const allCustomers = await fetchCustomers();
+
+---
+
+<Layout title={pageTitle}>
+    <section>
+        <h2>My Customers</h2>
+        { allCustomers && allCustomers.map(customer => (
+            <div class="link-card">
+                <a href={customer.id}>
+                    <h2>
+                        {customer.customername}
+                        <span>&rarr;</span>
+                    </h2>
+                    <p>
+                        {customer.customeraddress}
+                    </p>
+                    <p>{customer.city}</p>
+                    <p>{customer.postalcode}</p>
+                    <h3>{customer.country}</h3>
+                </a>
+            </div>
+            ))
+        }
+        { !allCustomers.length && 
+            <p>No customers to display</p>
+        }
+    </section>
+
+</Layout>

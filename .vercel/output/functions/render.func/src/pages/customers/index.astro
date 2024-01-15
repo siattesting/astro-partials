@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { fetchCustomers } from '../../lib/neondata.js'
+const pageTitle = "Posts Index Page";
+
+const allCustomers = await fetchCustomers();
+
+---
+
+<Layout title={pageTitle}>
+    <section>
+        <h2>My Customers</h2>
+        { allCustomers && allCustomers.map(customer => (
+            <div>
+                <h2>{customer.CustomerName}</h2>
+            </div>))
+        }
+    </section>
+
+</Layout>../../lib/tursodata.js../../lib/neondata.js

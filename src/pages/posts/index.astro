@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+import { fetchPosts } from '../../lib/neondatafetcher.js'
+
+const pageTitle = "Posts Index Page";
+
+const allPosts = await fetchPosts()
+---
+
+<Layout title={pageTitle}>
+    <section>
+        <h2>My Posts</h2>
+        { allPosts && allPosts.map(post => (
+            <div>
+                <h2>{post.title}</h2>
+            </div>))
+        }
+        { !allPosts.length && 
+        <p>No posts to display</p>
+        }
+    </section>
+
+</Layout>

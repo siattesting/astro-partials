@@ -21,3 +21,14 @@ export async function fetchPosts() {
     throw new Error('Failed to fetch posts. ');
   }
 }
+
+export async function fetchCustomersByCountry(country) {
+  try {
+    const customers =
+      await sql` SELECT * FROM customers WHERE country = ${country} ORDER BY customername ASC`;
+    return customers;
+  } catch (error) {
+    console.error('Database Error: ', err);
+    throw new Error('Failed to fetch customers by Country. ');
+  }
+}

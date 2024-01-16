@@ -11,6 +11,13 @@ const allCustomers = await fetchCustomers();
 <Layout title={pageTitle}>
     <section>
         <h2>My Customers</h2>
+        <form action="">
+            <div class="form-group">
+                <input type="search" class="form-control" name="search" placeholder="Search customers by country" >
+            </div>
+            <button type="submit" class="submit-btn" hx-post="/customers/partials/customersbycountry" hx-trigger="click delay:500ms" hx-target=".grid-container">Search</button>
+        </form>
+        
         <div class="grid-container">
         { allCustomers && allCustomers.map(customer => (
             <div class="link-card grid-item">
@@ -48,10 +55,10 @@ const allCustomers = await fetchCustomers();
     .grid-item {
         border: 2px solid #ccc;
         border-radius: 5px;
+        padding: 10px;
     }
     .grid-item:hover {
         border: 5px solid #cef;
-        background-color: #ff12ff;
     }
 
     .

@@ -11,8 +11,9 @@ const allCustomers = await fetchCustomers();
 <Layout title={pageTitle}>
     <section>
         <h2>My Customers</h2>
+        <div class="grid-container">
         { allCustomers && allCustomers.map(customer => (
-            <div class="link-card">
+            <div class="link-card grid-item">
                 <a href={customer.id}>
                     <h2>
                         {customer.customername}
@@ -31,6 +32,28 @@ const allCustomers = await fetchCustomers();
         { !allCustomers.length && 
             <p>No customers to display</p>
         }
+        </div>
     </section>
 
 </Layout>
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        column gap: 20px;
+        row-gap: 2em;
+        
+    }
+    .grid-item {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+    }
+    .grid-item:hover {
+        border: 5px solid #cef;
+        background-color: #ff12ff;
+    }
+
+    .
+    
+</style>

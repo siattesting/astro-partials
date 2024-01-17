@@ -7,7 +7,11 @@ if (Astro.request.method !== "POST") {
 const formData = await Astro.request.formData()
 const search = formData.get("search")?.toString()
 console.log(search)
-const results = await fetchCustomersByCountry(search)
+
+const selected = formData.get("selected")?.toString()
+console.log(selected)
+
+const results = await fetchCustomersByCountry(selected)
 
 ---
 
@@ -17,7 +21,7 @@ const results = await fetchCustomersByCountry(search)
     </div>
     <div id="results" class="grid-container">
         {results && results.map(customer => (
-        <div class="link-card grid-item">
+        <div class="grid-item">
             <a href={customer.id}>
                 <h2>
                     {customer.customername}

@@ -32,3 +32,14 @@ export async function fetchCustomersByCountry(country) {
     throw new Error('Failed to fetch customers by Country. ');
   }
 }
+
+export async function fetchCountries() {
+  try {
+    const countries =
+      await sql` SELECT DISTINCT country FROM customers ORDER BY country ASC`;
+    return countries;
+  } catch (error) {
+    console.error('Database Error: ', err);
+    throw new Error('Failed to fetch countries in customers table. ');
+  }
+}

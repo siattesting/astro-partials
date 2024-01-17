@@ -1,26 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import CustomerCard from '../../components/CustomerCard.astro'
-import { fetchCustomers } from '../../lib/neondatafetcher.js'
+import { fetchCountries, fetchCustomers } from '../../lib/neondatafetcher.js'
 const pageTitle = "Customers Index Page";
 
 const allCustomers = await fetchCustomers();
-
+const countries = await fetchCountries()
 ---
 
 <Layout title={pageTitle}>
     <section>
         <h2>My Customers</h2>
         <form action="">
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <input type="search" class="form-control" name="search" placeholder="Search customers by country" >
+            </div> -->
+            <div class="form-group">
+                <select class="form-control" name="selected" hx-post="/customers/partials/customersbycountry" hx-trigger="input changed delay:500ms" hx-target=".grid-container">
+                    { countries && countries.map(item => (<option value={item.country} >{item.country}</option>) )}
+                </select>
             </div>
-            <button type="submit" class="submit-btn" hx-post="/customers/partials/customersbycountry" hx-trigger="click delay:500ms" hx-target=".grid-container">Search</button>
+            <!-- <button type="submit" class="submit-btn" hx-post="/customers/partials/customersbycountry" hx-trigger="click delay:500ms" hx-target=".grid-container">Search</button> -->
         </form>
+        { countries && countries.map(item => 
+        (<div class="inline-list">
+            <span class="">{item.country}</span>
+        </div>)
+        )}
+        
+        
         
         <div class="grid-container">
         { allCustomers && allCustomers.map(customer => (
-            <div class="link-card grid-item">
+            <div class="grid-item">
                 <a href={customer.id}>
                     <h2>
                         {customer.customername}
@@ -45,22 +57,18 @@ const allCustomers = await fetchCustomers();
 </Layout>
 
 <style>
-    .grid-container {
+    .countries {
         display: grid;
-        grid-template-columns: auto auto;
-        column gap: 20px;
-        row-gap: 2em;
-        
+		grid-template-columns: auto auto auto auto auto auto;
+		gap: 2rem;
+		padding: 0;
     }
-    .grid-item {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
+    .countries button {
+        margin: 2px;
     }
-    .grid-item:hover {
-        border: 5px solid #cef;
+    .inline-list {
+        display: grid;
+        grid-template-columns: repeat(6);
     }
-
-    .
     
 </style>

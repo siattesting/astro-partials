@@ -1,0 +1,40 @@
+---
+import { fetchCustomersByCountry } from "../../../lib/neondatafetcher";
+
+if (Astro.request.method !== "POST") {
+  return Astro.redirect(null, 404);
+}
+const formData = await Astro.request.formData()
+const search = formData.get("search")?.toString()
+console.log(search)
+
+const selected = formData.get("selected")?.toString()
+console.log(selected)
+
+const results = await fetchCustomersByCountry(selected)
+
+---
+
+<article class="">
+    <div class="form-group">
+        <input type="text" class="form-control" name="countryInput">
+    </div>
+    <div id="results" class="grid-container">
+        {results && results.map(customer => (
+        <div class="grid-item">
+            <a href={customer.id}>
+                <h2>
+                    {customer.customername}
+                    <span>&rarr;</span>
+                </h2>
+                <p>
+                    {customer.customeraddress}
+                </p>
+                <p>{customer.city}</p>
+                <p>{customer.postalcode}</p>
+                <h3>{customer.country}</h3>
+            </a>
+        </div>
+        ))}
+    </div>
+</article>

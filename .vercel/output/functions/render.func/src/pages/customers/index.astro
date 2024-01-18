@@ -1,20 +1,74 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import { fetchCustomers } from '../../lib/neondata.js'
-const pageTitle = "Posts Index Page";
+import CustomerCard from '../../components/CustomerCard.astro'
+import { fetchCountries, fetchCustomers } from '../../lib/neondatafetcher.js'
+const pageTitle = "Customers Index Page";
 
 const allCustomers = await fetchCustomers();
-
+const countries = await fetchCountries()
 ---
 
 <Layout title={pageTitle}>
     <section>
         <h2>My Customers</h2>
+        <form action="">
+            <!-- <div class="form-group">
+                <input type="search" class="form-control" name="search" placeholder="Search customers by country" >
+            </div> -->
+            <div class="form-group">
+                <select class="form-control" name="selected" hx-post="/customers/partials/customersbycountry" hx-trigger="input changed delay:500ms" hx-target=".grid-container">
+                    { countries && countries.map(item => (<option value={item.country} >{item.country}</option>) )}
+                </select>
+            </div>
+            <!-- <button type="submit" class="submit-btn" hx-post="/customers/partials/customersbycountry" hx-trigger="click delay:500ms" hx-target=".grid-container">Search</button> -->
+        </form>
+        { countries && countries.map(item => 
+        (<div class="inline-list">
+            <span class="">{item.country}</span>
+        </div>)
+        )}
+        
+        
+        
+        <div class="grid-container">
         { allCustomers && allCustomers.map(customer => (
-            <div>
-                <h2>{customer.CustomerName}</h2>
-            </div>))
+            <div class="grid-item">
+                <a href={customer.id}>
+                    <h2>
+                        {customer.customername}
+                        <span>&rarr;</span>
+                    </h2>
+                    <p>
+                        {customer.customeraddress}
+                    </p>
+                    <p>{customer.city}</p>
+                    <p>{customer.postalcode}</p>
+                    <h3>{customer.country}</h3>
+                </a>
+            </div>
+            ))
         }
+        { !allCustomers.length && 
+            <p>No customers to display</p>
+        }
+        </div>
     </section>
 
-</Layout>../../lib/tursodata.js../../lib/neondata.js
+</Layout>
+
+<style>
+    .countries {
+        display: grid;
+		grid-template-columns: auto auto auto auto auto auto;
+		gap: 2rem;
+		padding: 0;
+    }
+    .countries button {
+        margin: 2px;
+    }
+    .inline-list {
+        display: grid;
+        grid-template-columns: repeat(6);
+    }
+    
+</style>
